@@ -92,6 +92,12 @@ export default {
             clickOnLetter: false,
         }
     },
+    async created() {
+        this.getAllPokemons()
+        this.pokemonsWithM()
+        this.pokemonsWithC()
+        this.filterByType()
+    },
     methods: {
         async searchPokemon() {
             try {
