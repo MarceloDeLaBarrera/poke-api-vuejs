@@ -6,6 +6,30 @@
         </label>
         <button class="searchButton" @click="searchPokemon">Buscar</button>
     </header>
+    <main class="main">
+        <section class="pokemonCard">
+            <input
+                type="button"
+                v-for="(type, key) in arrayOfTypes"
+                :class="type"
+                :key="key"
+                @click="setFilteredPokemons(type)"
+                :value="type"
+            />
+        </section>
+    </main>
+    <div class="main">
+        <section class="pokemonCard">
+            <input
+                type="button"
+                v-for="(pokemon, key) in arrayOfPokemonLetters"
+                :class="pokemon"
+                :key="key"
+                @click="getPokemonsByLetter(pokemon)"
+                :value="pokemon"
+            />
+        </section>
+    </div>
     <main
         class="main"
         v-if="Object.entries(pokemonData).length > 0 && showPokemonData == true"
@@ -31,12 +55,130 @@
             <ul class="stats">
                 <h2>Stats:</h2>
                 <li v-for="(stat, key) in pokemonData.stats" :key="key">
-                    <span>{{ stat.stat.name }} => {{ stat.base_stat }}</span>
+                    <span>{{ stat.stat.name }} -> {{ stat.base_stat }}</span>
                 </li>
             </ul>
         </section>
     </main>
     <main v-else-if="searchLoading"><h1>Cargando...</h1></main>
+    <main
+        class="main"
+        v-if="
+            Object.entries(allPokemonData).length > 0 && showAllPokemons == true
+        "
+    >
+        <section
+            class="pokemonCard"
+            v-for="(pokemonData, key) in allPokemonData"
+            :key="key"
+        >
+            <div class="nameImage">
+                <h1 class="pokemonName">{{ pokemonData.name }}</h1>
+                <img
+                    :src="pokemonData.sprites.front_default"
+                    :alt="pokemonData.name"
+                />
+            </div>
+            <ul class="type">
+                <h2>Type:</h2>
+                <li
+                    v-for="(type, key) in pokemonData.types"
+                    :key="key"
+                    :class="type.type.name"
+                >
+                    <span>{{ type.type.name }}</span>
+                </li>
+            </ul>
+            <ul class="stats">
+                <h2>Stats:</h2>
+                <li v-for="(stat, key) in pokemonData.stats" :key="key">
+                    <span>{{ stat.stat.name }} -> {{ stat.base_stat }}</span>
+                </li>
+            </ul>
+        </section>
+    </main>
+    <main class="main" v-else-if="loadingPokemons">
+        <h1>Cargando todos los Pokemon...</h1>
+    </main>
+
+    <main
+        class="main"
+        v-if="
+            Object.entries(filteredPokemonData).length > 0 &&
+            showPokemonByType == true &&
+            clickOnType == true
+        "
+    >
+        <section
+            class="pokemonCard"
+            v-for="(pokemonData, key) in filteredPokemonData"
+            :key="key"
+        >
+            <div class="nameImage">
+                <h1 class="pokemonName">{{ pokemonData.name }}</h1>
+                <img
+                    :src="pokemonData.sprites.front_default"
+                    :alt="pokemonData.name"
+                />
+            </div>
+            <ul class="type">
+                <h2>Type:</h2>
+                <li
+                    v-for="(type, key) in pokemonData.types"
+                    :key="key"
+                    :class="type.type.name"
+                >
+                    <span>{{ type.type.name }}</span>
+                </li>
+            </ul>
+            <ul class="stats">
+                <h2>Stats:</h2>
+                <li v-for="(stat, key) in pokemonData.stats" :key="key">
+                    <span>{{ stat.stat.name }} -> {{ stat.base_stat }}</span>
+                </li>
+            </ul>
+        </section>
+    </main>
+    <main class="main" v-else-if="loadingPokemonsByType">
+        <h1>Cargando Pokemons...</h1>
+    </main>
+
+    <main
+        class="main"
+        v-if="
+            Object.entries(pokemonsWithLetterC).length > 0 &&
+            clickOnLetter == true &&
+            showPokemonWithC == true
+        "
+    >
+        <h1>
+            Los pokemones que contienen la letra 'C' son:
+            {{ pokemonsWithLetterC.length }}
+        </h1>
+        <ul>
+            <li v-for="(element, key) in pokemonsWithLetterC" :key="key">
+                {{ key + 1 }}.-{{ element }}
+            </li>
+        </ul>
+    </main>
+    <main
+        class="main"
+        v-if="
+            Object.entries(pokemonsWithLetterM).length > 0 &&
+            clickOnLetter == true &&
+            showPokemonWithM == true
+        "
+    >
+        <h1>
+            Los pokemones que contienen la letra 'M' son:
+            {{ pokemonsWithLetterM.length }}
+        </h1>
+        <ul>
+            <li v-for="(element, key) in pokemonsWithLetterM" :key="key">
+                {{ key + 1 }}.-{{ element }}
+            </li>
+        </ul>
+    </main>
 </template>
 
 <script>
@@ -103,10 +245,16 @@ export default {
         async searchPokemon() {
             try {
                 this.searchLoading = true
+                this.loadingPokemons = false
                 const pokemonToFind = await fetch(`${url}/${this.pokemonID}`)
                 const pokemon = await pokemonToFind.json()
                 if (pokemon) {
                     this.pokemonData = pokemon
+                    this.showPokemonData = true
+                    this.showAllPokemons = false
+                    this.showPokemonByType = false
+                    this.showPokemonWithC = false
+                    this.showPokemonWithM = false
                     this.searchLoading = false
                     console.log(pokemon)
                 }
