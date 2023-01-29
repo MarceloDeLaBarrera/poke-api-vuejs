@@ -31,7 +31,7 @@
             <ul class="stats">
                 <h2>Stats:</h2>
                 <li v-for="(stat, key) in pokemonData.stats" :key="key">
-                    <span>{{ stat.stat.name }} -> {{ stat.base_stat }}</span>
+                    <span>{{ stat.stat.name }} => {{ stat.base_stat }}</span>
                 </li>
             </ul>
         </section>
