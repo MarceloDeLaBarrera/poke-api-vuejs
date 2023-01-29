@@ -206,6 +206,31 @@ export default {
                 return filteredPokemonsData
             }
         },
+        async getPokemonsByLetter(selectedButton) {
+            this.clickOnLetter = true
+            this.searchLoading = false
+            this.loadingPokemons = false
+            this.loadingPokemonsByType = false
+            if (selectedButton === 'Pokemons that contains "C"') {
+                const pokemons =
+                    this.pokemonsWithLetterC || (await this.pokemonsWithC())
+                this.showPokemonWithC = true
+                this.showPokemonWithM = false
+                this.showPokemonData = false
+                this.showAllPokemons = false
+                this.showPokemonByType = false
+                return pokemons
+            } else {
+                const pokemons =
+                    this.pokemonsWithLetterM || (await this.pokemonsWithM())
+                this.showPokemonWithM = true
+                this.showPokemonWithC = false
+                this.showPokemonData = false
+                this.showAllPokemons = false
+                this.showPokemonByType = false
+                return pokemons
+            }
+        },
     },
 }
 </script>
