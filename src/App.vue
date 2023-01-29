@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import { reactive } from 'vue'
 const url = 'https://pokeapi.co/api/v2/pokemon'
 
 export default {
@@ -115,6 +116,44 @@ export default {
                 this.searchLoading = false
                 alert('Pokemon was not found')
             }
+        },
+        async getAllPokemons() {
+            try {
+                this.loadingPokemons = true
+                const newArray = reactive([])
+                while (this.allPokemonUrl) {
+                    const response = await fetch(this.allPokemonUrl)
+                    const data = await response.json()
+                    const results = data.results
+                    this.allPokemonUrl = data.next
+                    newArray.push(...results)
+                }
+                this.allPokemon = newArray
+                this.showAllPokemons = true
+                this.showPokemonData = false
+                this.showPokemonByType = false
+                this.showPokemonWithC = false
+                this.showPokemonWithM = false
+                return newArray
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async pokemonsWithC() {
+            const pokemons = await this.getAllPokemons()
+            const pokemonsFilterWithC = pokemons
+                .filter((element) => element.name.includes('c'))
+                .map((pokemon) => pokemon.name)
+            this.pokemonsWithLetterC = pokemonsFilterWithC
+            console.log(pokemonsFilterWithC)
+        },
+        async pokemonsWithM() {
+            const pokemons = await this.getAllPokemons()
+            const pokemonsFilterWithM = pokemons
+                .filter((element) => element.name.includes('m'))
+                .map((pokemon) => pokemon.name)
+            this.pokemonsWithLetterM = pokemonsFilterWithM
+            console.log(pokemonsFilterWithM)
         },
     },
 }
