@@ -18,7 +18,7 @@
             />
         </section>
     </main>
-    <div class="main">
+    <div class="main" style="padding-top: 10px">
         <section class="pokemonCard">
             <input
                 type="button"
@@ -30,6 +30,7 @@
             />
         </section>
     </div>
+    <br />
     <main
         class="main"
         v-if="Object.entries(pokemonData).length > 0 && showPokemonData == true"
