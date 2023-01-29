@@ -155,6 +155,57 @@ export default {
             this.pokemonsWithLetterM = pokemonsFilterWithM
             console.log(pokemonsFilterWithM)
         },
+        async filterByType(pokemonType) {
+            try {
+                const pokemons =
+                    this.allPokemon || (await this.getAllPokemons())
+                console.log(pokemons)
+                const pokemonDataArray = reactive([])
+                if (this.allPokemonData.length < 1) {
+                    console.log('entroaca')
+                    for (let i = 0; i < pokemons.length; i++) {
+                        console.log(i)
+                        let result = await fetch(`${url}/${pokemons[i].name}`)
+                        let data = await result.json()
+                        pokemonDataArray.push(data)
+                    }
+                    this.allPokemonData = pokemonDataArray
+                    console.log(this.allPokemonData)
+                }
+
+                if (pokemonType && pokemonType !== 'all') {
+                    const filteredPokemons = this.allPokemonData.filter(
+                        (pokemon) =>
+                            pokemon.types.some(
+                                (type) => type['type']['name'] == pokemonType
+                            )
+                    )
+                    console.log(filteredPokemons)
+                    this.filteredPokemonData = filteredPokemons
+                    return filteredPokemons
+                } else {
+                    this.filteredPokemonData = this.allPokemonData
+                    return this.allPokemonData
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async setFilteredPokemons(type) {
+            this.loadingPokemonsByType = true
+            this.loadingPokemons = false
+            const filteredPokemonsData = await this.filterByType(type)
+            if (filteredPokemonsData) {
+                this.clickOnType = true
+                this.showPokemonByType = true
+                this.showPokemonData = false
+                this.showAllPokemons = false
+                this.loadingPokemonsByType = false
+                this.showPokemonWithC = false
+                this.showPokemonWithM = false
+                return filteredPokemonsData
+            }
+        },
     },
 }
 </script>
