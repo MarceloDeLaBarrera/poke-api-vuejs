@@ -56,7 +56,6 @@ export default {
         async searchPokemon() {
             try {
                 this.searchLoading = true
-                this.loadingPokemons = false
                 const pokemonToFind = await fetch(`${url}/${this.pokemonID}`)
                 const pokemon = await pokemonToFind.json()
                 if (pokemon) {
