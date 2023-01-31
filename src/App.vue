@@ -194,8 +194,8 @@ export default {
             allPokemon: undefined,
             allPokemonData: [],
             filteredPokemonData: [],
-            pokemonsWithLetterC: undefined,
-            pokemonsWithLetterM: undefined,
+            pokemonsWithLetterC: [],
+            pokemonsWithLetterM: [],
             pokemonID: '',
             showPokemonData: false,
             showAllPokemons: false,
@@ -205,25 +205,25 @@ export default {
             allPokemonUrl:
                 'https://pokeapi.co/api/v2/pokemon/?limit=100&offset=0',
             arrayOfTypes: [
-                'normal',
-                'fire',
-                'water',
-                'grass',
-                'electric',
-                'ice',
-                'fighting',
-                'poison',
-                'ground',
-                'flying',
-                'psychic',
-                'bug',
-                'rock',
-                'ghost',
-                'dark',
-                'dragon',
-                'steel',
-                'fairy',
-                'all',
+                'Normal',
+                'Fire',
+                'Water',
+                'Grass',
+                'Electric',
+                'Ice',
+                'Fighting',
+                'Poison',
+                'Ground',
+                'Flying',
+                'Psychic',
+                'Bug',
+                'Rock',
+                'Ghost',
+                'Dark',
+                'Dragon',
+                'Steel',
+                'Fairy',
+                'All',
             ],
             arrayOfPokemonLetters: [
                 'Pokemons that contains "C"',
@@ -322,11 +322,13 @@ export default {
                     console.log(this.allPokemonData)
                 }
 
-                if (pokemonType && pokemonType !== 'all') {
+                if (pokemonType && pokemonType !== 'All') {
                     const filteredPokemons = this.allPokemonData.filter(
                         (pokemon) =>
                             pokemon.types.some(
-                                (type) => type['type']['name'] == pokemonType
+                                (type) =>
+                                    type['type']['name'] ==
+                                    pokemonType.toLowerCase()
                             )
                     )
                     console.log(filteredPokemons)
@@ -343,15 +345,15 @@ export default {
         async setFilteredPokemons(type) {
             this.loadingPokemonsByType = true
             this.loadingPokemons = false
+            this.showPokemonData = false
+            this.showAllPokemons = false
+            this.showPokemonWithC = false
+            this.showPokemonWithM = false
             const filteredPokemonsData = await this.filterByType(type)
             if (filteredPokemonsData) {
                 this.clickOnType = true
                 this.showPokemonByType = true
-                this.showPokemonData = false
-                this.showAllPokemons = false
                 this.loadingPokemonsByType = false
-                this.showPokemonWithC = false
-                this.showPokemonWithM = false
                 return filteredPokemonsData
             }
         },
@@ -361,8 +363,7 @@ export default {
             this.loadingPokemons = false
             this.loadingPokemonsByType = false
             if (selectedButton === 'Pokemons that contains "C"') {
-                const pokemons =
-                    this.pokemonsWithLetterC || (await this.pokemonsWithC())
+                const pokemons = this.pokemonsWithLetterC
                 this.showPokemonWithC = true
                 this.showPokemonWithM = false
                 this.showPokemonData = false
@@ -370,8 +371,7 @@ export default {
                 this.showPokemonByType = false
                 return pokemons
             } else {
-                const pokemons =
-                    this.pokemonsWithLetterM || (await this.pokemonsWithM())
+                const pokemons = this.pokemonsWithLetterM
                 this.showPokemonWithM = true
                 this.showPokemonWithC = false
                 this.showPokemonData = false
@@ -478,58 +478,58 @@ ul {
         text-transform: uppercase;
     }
 }
-.normal {
+.Normal {
     background-color: $normal;
 }
-.fire {
+.Fire {
     background-color: $fire;
 }
-.water {
+.Water {
     background-color: $water;
 }
-.grass {
+.Grass {
     background-color: $grass;
 }
-.electric {
+.Electric {
     background-color: $electric;
 }
-.ice {
+.Ice {
     background-color: $ice;
 }
-.fighting {
+.Fighting {
     background-color: $fighting;
 }
-.poison {
+.Poison {
     background-color: $poison;
 }
-.ground {
+.Ground {
     background-color: $ground;
 }
-.flying {
+.Flying {
     background-color: $flying;
 }
-.psychic {
+.Psychic {
     background-color: $psychic;
 }
-.bug {
+.Bug {
     background-color: $bug;
 }
-.rock {
+.Rock {
     background-color: $rock;
 }
-.ghost {
+.Ghost {
     background-color: $ghost;
 }
-.dark {
+.Dark {
     background-color: $dark;
 }
-.dragon {
+.Dragon {
     background-color: $dragon;
 }
-.steel {
+.Steel {
     background-color: $steel;
 }
-.fairy {
+.Fairy {
     background-color: $fairy;
 }
 @media screen and (max-width: 820px) {
