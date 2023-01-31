@@ -12,6 +12,8 @@ _This is a simple Pokemon app, where you can see all pokemons, search by name or
 -   [Autor](#autor-%EF%B8%8F)
 
 ## Screenshot ⭐
+![image](https://user-images.githubusercontent.com/52224826/215344114-68d2490a-e876-48a4-b3af-3c4b8364e8a3.png)
+
 
 ## Starting 🚀
 
