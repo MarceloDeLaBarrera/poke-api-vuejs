@@ -277,12 +277,12 @@ export default {
                     this.allPokemonUrl = data.next
                     newArray.push(...results)
                 }
-                this.allPokemon = newArray
                 this.showAllPokemons = true
                 this.showPokemonData = false
                 this.showPokemonByType = false
                 this.showPokemonWithC = false
                 this.showPokemonWithM = false
+                this.allPokemon = newArray
                 return newArray
             } catch (error) {
                 console.log(error)
@@ -311,14 +311,14 @@ export default {
                 console.log(pokemons)
                 const pokemonDataArray = reactive([])
                 if (this.allPokemonData.length < 1) {
-                    console.log('entroaca')
                     for (let i = 0; i < pokemons.length; i++) {
                         console.log(i)
                         let result = await fetch(`${url}/${pokemons[i].name}`)
                         let data = await result.json()
                         pokemonDataArray.push(data)
+                        this.allPokemonData = pokemonDataArray
                     }
-                    this.allPokemonData = pokemonDataArray
+                    //this.allPokemonData = pokemonDataArray
                     console.log(this.allPokemonData)
                 }
 
